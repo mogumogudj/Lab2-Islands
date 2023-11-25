@@ -8,9 +8,8 @@ export default class Island {
       return `#${Math.floor(Math.random() * 16777215).toString(16)}`;
     }
   
-    remove() {
+    remove(islandElement) {
       // JS animations api, fade out
-      const islandElement = document.querySelector(".island:last-child");
 
       //check if islandElement exists before attempting to remove it
       // remove the element when the animation ended

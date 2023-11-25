@@ -1,6 +1,6 @@
 import Island from "../classes/Island.js";
 
-class World {
+export default class World {
     constructor() {
       this.islands = []; // a good place to keep track of your islands
       this.hookEvents(); // let's kick things of by hooking up events
@@ -29,18 +29,13 @@ class World {
   
     getCoordinates() {
       // return coordinates within the screen at random, feel free to change it up!
-      const islandSize = 100;
-      const maxX = window.innerWidth - islandSize;
-      const maxY = window.innerHeight - islandSize;
-  
-      let x = Math.random() * maxX;
-      let y = Math.random() * maxY;
-  
-      // Ensure the coordinates are within the visible area
-      x = Math.max(0, Math.min(x, maxX));
-      y = Math.max(0, Math.min(y, maxY));
-  
-      return { x, y };
+        const islandSize = 100;
+        const maxX = window.innerWidth - islandSize;
+        const maxY = window.innerHeight - islandSize;
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+
+        return { x, y };
     }
   
     addIsland(island) {
@@ -94,6 +89,3 @@ class World {
         }
   }
 }
-
-  const world = new World();
-  
