@@ -50,7 +50,17 @@ class World {
         islandElement.className = 'island';
         islandElement.style.backgroundColor = island.color;
         islandElement.innerHTML = island.name;
+
+        // add a click event listener to remove the island
+        islandElement.addEventListener('click', () => this.handleIslandClick(island));
+
         document.getElementById('app').appendChild(islandElement);
+    }
+
+    handleIslandClick(island) {
+        island.remove();
+        this.islands = this.islands.filter(i => i !== island);
+        console.log("island removed");
     }
   
     moveIsland(island) {

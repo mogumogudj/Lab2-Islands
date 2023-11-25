@@ -10,7 +10,17 @@ export default class Island {
   
     remove() {
       // JS animations api, fade out
+      const islandElement = document.querySelector(".island:last-child");
+
+      //check if islandElement exists before attempting to remove it
       // remove the element when the animation ended
+      if(islandElement) {
+        islandElement.addEventListener('animationend', () => {
+            islandElement.remove();
+        });
+        islandElement.classList.add('island-fade-out');
+      }
+     
     }
   
     getRandomName() {
