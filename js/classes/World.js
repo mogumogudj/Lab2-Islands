@@ -33,7 +33,7 @@ export default class World {
   
     getCoordinates() {
       // return coordinates within the screen at random, feel free to change it up!
-      const islandSize = 100;
+      const islandSize = 500;
 
   // Calculate the maximum coordinates to ensure islands stay within the visible window
   const maxX = window.innerWidth - islandSize;
@@ -62,7 +62,6 @@ export default class World {
         const islandElement = document.createElement('div');
         islandElement.className = 'island';
         islandElement.setAttribute('data-name', island.name);
-        islandElement.style.backgroundColor = island.color;
         islandElement.innerHTML = island.name;
 
         // set the initial position of the island
@@ -77,7 +76,8 @@ export default class World {
         islandElement.addEventListener('click', () => this.handleIslandClick(island));
 
         document.getElementById('app').appendChild(islandElement);
-
+        // log the ufo image
+        console.log(islandElement.style.backgroundImage);
         return islandElement;
     } 
 
