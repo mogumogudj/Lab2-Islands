@@ -1,4 +1,4 @@
-import Island from "./Island.js";
+import Island from "../classes/Island.js";
 
 class World {
     constructor() {
@@ -9,17 +9,21 @@ class World {
     hookEvents() {
       // hook events like clicking buttons to a specific function
       document.getElementById('btnAddIsland').addEventListener('click', () => this.addIsland(new Island()));
-    document.getElementById('btnSave').addEventListener('click', () => this.save());
-    document.getElementById('btnLoad').addEventListener('click', () => this.load());
+      document.getElementById('btnSave').addEventListener('click', () => this.save());
+      document.getElementById('btnLoad').addEventListener('click', () => this.load());
     }
   
     save() {
       // save array islands to localstorage as string
+      localStorage.setItem('savedIslands', JSON.stringify(this.islands.map(island => island.name)));
       // loop over all this.islands and save the names
     }
   
     load() {
       // load islands from localstorage into array
+      const savedIslands = JSON.parse(localStorage.getItem('savedIslands')) || [];
+        this.islands = savedIslands.map(name => new Island(name));
+        this.islands.forEach(island => this.addIslandToDOM(island));
       // loop over the array and addIslands()
     }
   
@@ -34,10 +38,25 @@ class World {
   
     addIsland(island) {
       // add the islands to the DOM
+        const newIsland = island || new Island();
+        this.islands.push(newIsland);
+        this.addIslandToDOM(newIsland);
+        this.moveIsland(newIsland);
+        console.log("island added");
+    }
+
+    addIslandToDOM(island) {
+        const islandElement = document.createElement('div');
+        islandElement.className = 'island';
+        islandElement.style.backgroundColor = island.color;
+        islandElement.innerHTML = island.name;
+        document.getElementById('app').appendChild(islandElement);
     }
   
     moveIsland(island) {
       // this might be a good point to animate the islands with JS Animations API
     }
   }
+
+  const world = new World();
   
