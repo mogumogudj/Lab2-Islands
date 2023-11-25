@@ -29,32 +29,46 @@ class World {
   
     getCoordinates() {
       // return coordinates within the screen at random, feel free to change it up!
-      let randomSign = Math.random() < 0.5 ? -1 : 1;
-      return {
-        x: ((Math.random() * window.innerWidth) / 2) * randomSign,
-        y: ((Math.random() * window.innerHeight) / 2) * randomSign
-      };
+      const islandSize = 100;
+      const maxX = window.innerWidth - islandSize;
+      const maxY = window.innerHeight - islandSize;
+  
+      let x = Math.random() * maxX;
+      let y = Math.random() * maxY;
+  
+      // Ensure the coordinates are within the visible area
+      x = Math.max(0, Math.min(x, maxX));
+      y = Math.max(0, Math.min(y, maxY));
+  
+      return { x, y };
     }
   
     addIsland(island) {
       // add the islands to the DOM
         const newIsland = island || new Island();
         this.islands.push(newIsland);
-        this.addIslandToDOM(newIsland);
-        this.moveIsland(newIsland);
+
+        const coordinates = this.getCoordinates();
+        const islandElement = this.addIslandToDOM(newIsland, coordinates);
+        
         console.log("island added");
+        this.moveIsland(islandElement);
     }
 
-    addIslandToDOM(island) {
+    addIslandToDOM(island, coordinates) {
         const islandElement = document.createElement('div');
         islandElement.className = 'island';
         islandElement.style.backgroundColor = island.color;
         islandElement.innerHTML = island.name;
+        islandElement.style.transform = `translate(${coordinates.x}px, ${coordinates.y}px) scale(0.5)`;
+
 
         // add a click event listener to remove the island
         islandElement.addEventListener('click', () => this.handleIslandClick(island));
 
         document.getElementById('app').appendChild(islandElement);
+
+        return islandElement;
     }
 
     handleIslandClick(island) {
@@ -63,10 +77,23 @@ class World {
         console.log("island removed");
     }
   
-    moveIsland(island) {
+    moveIsland(islandElement) {
+        if(islandElement && islandElement.animate) {
+        // move the islands to a random position
+        const finalCoordinates = this.getCoordinates();
+
       // this might be a good point to animate the islands with JS Animations API
-    }
+      islandElement.animate([
+        { transform: `translate(${finalCoordinates.x}px, ${finalCoordinates.y}px) scale(0.5)` },
+      ], {
+        duration: 1000,
+        easing: 'ease-in-out',
+        fill: 'forwards'
+      });
+      console.log(finalCoordinates);
+        }
   }
+}
 
   const world = new World();
   
