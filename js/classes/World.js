@@ -53,6 +53,7 @@ export default class World {
     addIslandToDOM(island, coordinates) {
         const islandElement = document.createElement('div');
         islandElement.className = 'island';
+        islandElement.setAttribute('data-name', island.name);
         islandElement.style.backgroundColor = island.color;
         islandElement.innerHTML = island.name;
         islandElement.style.transform = `translate(${coordinates.x}px, ${coordinates.y}px) scale(0.5)`;
@@ -67,9 +68,17 @@ export default class World {
     }
 
     handleIslandClick(island) {
-        island.remove();
-        this.islands = this.islands.filter(i => i !== island);
-        console.log("island removed");
+        const islandElement = document.querySelector(`.island[data-name="${island.name}"]`);
+
+        if(islandElement) {
+            islandElement.classList.add('island-fade-out');
+            islandElement.addEventListener('animationend', () => {
+                islandElement.remove();
+
+                this.islands = this.islands.filter(i => i !== island);
+                console.log("island removed");
+        });
+        }
     }
   
     moveIsland(islandElement) {
