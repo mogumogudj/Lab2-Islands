@@ -15,27 +15,35 @@ export default class World {
   
     save() {
       // save array islands to localstorage as string
-      localStorage.setItem('savedIslands', JSON.stringify(this.islands.map(island => island.name)));
+      localStorage.setItem('savedIslands', JSON.stringify(this.islands.map(island => ({ name: island.name, color: island.color }))));
       // loop over all this.islands and save the names
+      console.log("island(s) saved");
     }
   
     load() {
-      // load islands from localstorage into array
-      const savedIslands = JSON.parse(localStorage.getItem('savedIslands')) || [];
-        this.islands = savedIslands.map(name => new Island(name));
-        this.islands.forEach(island => this.addIslandToDOM(island));
-      // loop over the array and addIslands()
-    }
+        // load islands from local storage into array
+        const savedIslands = JSON.parse(localStorage.getItem('savedIslands')) || [];
+        this.islands = savedIslands.map(islandData => new Island(islandData.name, islandData.color));
+        this.islands.forEach(island => {
+          const coordinates = this.getCoordinates(); // Generate random coordinates
+          this.addIslandToDOM(island, coordinates);
+          console.log("island(s) loaded");
+        });
+      }
   
     getCoordinates() {
       // return coordinates within the screen at random, feel free to change it up!
-        const islandSize = 100;
-        const maxX = window.innerWidth - islandSize;
-        const maxY = window.innerHeight - islandSize;
-        const x = Math.random() * maxX;
-        const y = Math.random() * maxY;
+      const islandSize = 100;
 
-        return { x, y };
+  // Calculate the maximum coordinates to ensure islands stay within the visible window
+  const maxX = window.innerWidth - islandSize;
+  const maxY = window.innerHeight - islandSize;
+
+  // Generate random coordinates within the visible window
+  const x = Math.random() * maxX;
+  const y = Math.random() * maxY;
+
+  return { x, y };
     }
   
     addIsland(island) {
@@ -56,6 +64,12 @@ export default class World {
         islandElement.setAttribute('data-name', island.name);
         islandElement.style.backgroundColor = island.color;
         islandElement.innerHTML = island.name;
+
+        // set the initial position of the island
+        const islandSize = 100;
+        islandElement.style.width = islandSize + 'px';
+        islandElement.style.height = islandSize + 'px';
+
         islandElement.style.transform = `translate(${coordinates.x}px, ${coordinates.y}px) scale(0.5)`;
 
 
@@ -65,7 +79,7 @@ export default class World {
         document.getElementById('app').appendChild(islandElement);
 
         return islandElement;
-    }
+    } 
 
     handleIslandClick(island) {
         const islandElement = document.querySelector(`.island[data-name="${island.name}"]`);

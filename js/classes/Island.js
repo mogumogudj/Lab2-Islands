@@ -1,7 +1,7 @@
 export default class Island {
-    constructor(name) {
+    constructor(name, color) {
         this.name = name || this.getRandomName();
-        this.color = this.getRandomColor();
+        this.color = color || this.getRandomColor();
     }
   
     getRandomColor() {
