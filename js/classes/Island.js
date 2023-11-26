@@ -25,16 +25,16 @@ export default class Island {
     getRandomName() {
       // array with 10 random island names
       const names = [
-        "Palmtree beach",
-        "Sandy beach",
-        "Tropical beach",
-        "Palm beach",
-        "Sunny beach",
-        "Paradise beach",
-        "Sunny island",
-        "Tropical island",
-        "Palm island",
-        "Paradise island"
+        "Starlight Cove",
+        "Galaxy Oasis",
+        "Nebula Shores",
+        "Cosmic Retreat",
+        "Aurora Isle",
+        "Celestial Haven",
+        "Lunar Paradise",
+        "Astral Beach",
+        "Orion Oasis",
+        "Stellar Haven"
       ];
   
       // return a random name from the array
