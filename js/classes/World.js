@@ -14,20 +14,24 @@ export default class World {
     }
   
     save() {
+      this.islands.forEach(island => {
+        console.log(island.name, "saved!!");
+      });
       // save array islands to localstorage as string
       localStorage.setItem('savedIslands', JSON.stringify(this.islands.map(island => ({ name: island.name, color: island.color }))));
-      // loop over all this.islands and save the names
-      console.log("island(s) saved");
     }
   
     load() {
         // load islands from local storage into array
         const savedIslands = JSON.parse(localStorage.getItem('savedIslands')) || [];
         this.islands = savedIslands.map(islandData => new Island(islandData.name, islandData.color));
+
         this.islands.forEach(island => {
+          console.log(island.name, "loaded!!");
+
           const coordinates = this.getCoordinates(); // Generate random coordinates
+
           this.addIslandToDOM(island, coordinates);
-          console.log("island(s) loaded");
         });
       }
   
@@ -54,7 +58,7 @@ export default class World {
         const coordinates = this.getCoordinates();
         const islandElement = this.addIslandToDOM(newIsland, coordinates);
         
-        console.log("island added");
+        console.log(island.name, "added!!");
         this.moveIsland(islandElement);
     }
 
@@ -76,21 +80,16 @@ export default class World {
         islandElement.addEventListener('click', () => this.handleIslandClick(island));
 
         document.getElementById('app').appendChild(islandElement);
-        // log the ufo image
-        console.log(islandElement.style.backgroundImage);
         return islandElement;
     } 
 
     handleIslandClick(island) {
         const islandElement = document.querySelector(`.island[data-name="${island.name}"]`);
-
         if(islandElement) {
             islandElement.classList.add('island-fade-out');
             islandElement.addEventListener('animationend', () => {
                 islandElement.remove();
-
-                this.islands = this.islands.filter(i => i !== island);
-                console.log("island removed");
+                this.islands = this.islands.filter(i => i !== island);     
         });
         }
     }
